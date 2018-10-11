@@ -11,6 +11,7 @@
 
 #include "raylib.h"
 #include "meep.h"
+#include "player.h"
 
 int main()
 {
@@ -22,17 +23,22 @@ int main()
 	InitWindow(screenWidth, screenHeight, "raylib [core] example - basic window");
 
 	meep terr;
-	terr.enabled = false;
+	terr.pos = { 100, 100 };
+	terr.speed = 70.0f;
+	terr.enabled = true;
+	terr.playerController = true;
 
 	SetTargetFPS(60);
 	//--------------------------------------------------------------------------------------
-
-	terr.enabled = true;
 
 	// Main game loop
 	while (!WindowShouldClose())    // Detect window close button or ESC key
 	{
 		// Update
+		if (terr.playerController == true)
+		{
+			terr.update(GetFrameTime());
+		}
 		//----------------------------------------------------------------------------------
 		// TODO: Update your variables here
 		//----------------------------------------------------------------------------------

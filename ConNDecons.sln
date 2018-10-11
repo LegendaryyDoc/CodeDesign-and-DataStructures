@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28010.2016
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "raygame", "raygame\raygame.vcxproj", "{100AB646-1529-43F3-B9D1-2C0A798642FF}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CnD", "raygame\raygame.vcxproj", "{100AB646-1529-43F3-B9D1-2C0A798642FF}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OpOverLoad", "OpOverLoad\OpOverLoad.vcxproj", "{013BAB3A-A2C9-4502-8A87-64CC0283EBBD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,14 @@ Global
 		{100AB646-1529-43F3-B9D1-2C0A798642FF}.Release|x64.Build.0 = Release|x64
 		{100AB646-1529-43F3-B9D1-2C0A798642FF}.Release|x86.ActiveCfg = Release|Win32
 		{100AB646-1529-43F3-B9D1-2C0A798642FF}.Release|x86.Build.0 = Release|Win32
+		{013BAB3A-A2C9-4502-8A87-64CC0283EBBD}.Debug|x64.ActiveCfg = Debug|x64
+		{013BAB3A-A2C9-4502-8A87-64CC0283EBBD}.Debug|x64.Build.0 = Debug|x64
+		{013BAB3A-A2C9-4502-8A87-64CC0283EBBD}.Debug|x86.ActiveCfg = Debug|Win32
+		{013BAB3A-A2C9-4502-8A87-64CC0283EBBD}.Debug|x86.Build.0 = Debug|Win32
+		{013BAB3A-A2C9-4502-8A87-64CC0283EBBD}.Release|x64.ActiveCfg = Release|x64
+		{013BAB3A-A2C9-4502-8A87-64CC0283EBBD}.Release|x64.Build.0 = Release|x64
+		{013BAB3A-A2C9-4502-8A87-64CC0283EBBD}.Release|x86.ActiveCfg = Release|Win32
+		{013BAB3A-A2C9-4502-8A87-64CC0283EBBD}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
