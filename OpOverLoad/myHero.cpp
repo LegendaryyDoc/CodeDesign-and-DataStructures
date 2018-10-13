@@ -44,8 +44,8 @@ hero::~hero()
 void hero::refresh()
 {
 
-	int screenWidth = 800;
-	int screenHeight = 450;
+	int screenWidth = 832;
+	int screenHeight = 448;
 
 	if (hp >= 80)
 	{

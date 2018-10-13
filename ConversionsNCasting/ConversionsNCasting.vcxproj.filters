@@ -18,30 +18,36 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="myHero.cpp">
+    <ClCompile Include="OriginalClass.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="potion.cpp">
+    <ClCompile Include="NewerClass.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ball.cpp">
+    <ClCompile Include="Wizard.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="square.cpp">
+    <ClCompile Include="Barbarian.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="corpse.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="myHero.h">
+    <ClInclude Include="OriginalClass.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="potion.h">
+    <ClInclude Include="NewerClass.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ball.h">
+    <ClInclude Include="Wizard.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="square.h">
+    <ClInclude Include="Barbarian.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="corpse.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

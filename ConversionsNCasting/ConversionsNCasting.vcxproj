@@ -20,8 +20,8 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
-    <ProjectGuid>{013BAB3A-A2C9-4502-8A87-64CC0283EBBD}</ProjectGuid>
-    <RootNamespace>OpOverLoad</RootNamespace>
+    <ProjectGuid>{3B01B757-3364-44AC-8221-40F31BC565B6}</ProjectGuid>
+    <RootNamespace>ConversionsNCasting</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -131,17 +131,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="ball.cpp" />
+    <ClCompile Include="Barbarian.cpp" />
+    <ClCompile Include="corpse.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="myHero.cpp" />
-    <ClCompile Include="potion.cpp" />
-    <ClCompile Include="square.cpp" />
+    <ClCompile Include="NewerClass.cpp" />
+    <ClCompile Include="OriginalClass.cpp" />
+    <ClCompile Include="Wizard.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ball.h" />
-    <ClInclude Include="myHero.h" />
-    <ClInclude Include="potion.h" />
-    <ClInclude Include="square.h" />
+    <ClInclude Include="Barbarian.h" />
+    <ClInclude Include="corpse.h" />
+    <ClInclude Include="NewerClass.h" />
+    <ClInclude Include="OriginalClass.h" />
+    <ClInclude Include="Wizard.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

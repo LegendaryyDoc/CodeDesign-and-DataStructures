@@ -84,7 +84,7 @@ int main()
 			totalXY = copyY + copyX;
 
 			paintID = master.grid[totalXY];
-			//std::cout << paintID << std::endl;
+			//+std::cout << paintID << std::endl;
 		}
 
 		// if mouse button pressed right button
