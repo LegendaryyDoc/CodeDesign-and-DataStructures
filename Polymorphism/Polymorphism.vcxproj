@@ -20,7 +20,7 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
-    <ProjectGuid>{99978C6C-90C3-4C20-8D21-3696117427C1}</ProjectGuid>
+    <ProjectGuid>{F243F256-B1CB-4B04-A20A-AEEFC9CBFFED}</ProjectGuid>
     <RootNamespace>raygame</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
@@ -131,13 +131,25 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="basicSprite.cpp" />
-    <ClCompile Include="button.cpp" />
+    <ClCompile Include="barbarian.cpp" />
+    <ClCompile Include="enemy.cpp" />
+    <ClCompile Include="imp.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="necromancer.cpp" />
+    <ClCompile Include="ogre.cpp" />
+    <ClCompile Include="picker.cpp" />
+    <ClCompile Include="player.cpp" />
+    <ClCompile Include="wizard.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="basicSprite.h" />
-    <ClInclude Include="button.h" />
+    <ClInclude Include="barbarian.h" />
+    <ClInclude Include="enemy.h" />
+    <ClInclude Include="imp.h" />
+    <ClInclude Include="necromancer.h" />
+    <ClInclude Include="ogre.h" />
+    <ClInclude Include="picker.h" />
+    <ClInclude Include="player.h" />
+    <ClInclude Include="wizard.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
