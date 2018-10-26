@@ -1,6 +1,6 @@
 #pragma once
 #include "raylib.h"
-#include "tVecor.h"
+#include "tVector.h"
 
 template <typename T>
 class tStack

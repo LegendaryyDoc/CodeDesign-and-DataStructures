@@ -4,8 +4,11 @@
 
 enum spells
 {
+	None,
 	Water,
 	Fire,
 	Earth,
-	Lightning
+	Lightning,
+	IsThatWaterElectrified,
+	Magma
 };

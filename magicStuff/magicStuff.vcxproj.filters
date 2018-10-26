@@ -23,5 +23,11 @@
     <ClInclude Include="spells.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="tStack.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tVector.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
