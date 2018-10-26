@@ -12,8 +12,6 @@ void enemy::draw()
 
 void enemy::move()
 {
-	
-
 	 pos.x += rand() % 8 + -4;
 	 pos.y += rand() % 8 + -4;
 }
