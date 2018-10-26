@@ -31,7 +31,7 @@ public:
 	tVector& operator=(const tVector & vec);
 	T& operator[] (size_t index);
 
-	bool empty();						// Returns true if the vector contains no elements.
+	bool empty() const;					// Returns true if the vector contains no elements.
 	void resize(size_t);				// Resizes the vector to contain the given number of elements.
 	void shrink_to_fit();				// Resizes the vector's capacity to match its size.
 	void clear();						// Empties the vector (all elements are destroyed in this process)
@@ -168,7 +168,7 @@ inline T & tVector<T>::operator[](size_t index)
 }
 
 template<typename T>
-inline bool tVector<T>::empty()
+inline bool tVector<T>::empty() const
 {
 	if (arrSize == 0)
 	{

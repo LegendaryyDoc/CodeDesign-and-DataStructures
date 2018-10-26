@@ -1,6 +1,7 @@
 #include "raylib.h"
 #include "tVecor.h"
 #include "enemy.h"
+#include "tStack.h"
 #include <iostream>
 #include <ctime>
 
@@ -15,7 +16,15 @@ int main()
 
 	SetTargetFPS(60);
 
-	tVector<enemy*> original;
+	//tVector<enemy*> original;
+	tStack<int> en;
+	en.push(6);
+	en.push(7);
+	en.pop();
+
+	std::cout << "Last Number: " << en.top() << std::endl;
+	
+	std::cout << en.empty() << std::endl;
 
 	while (!WindowShouldClose())    
 	{
@@ -23,7 +32,7 @@ int main()
 
 		Vector2 cursor = GetMousePosition();
 
-		if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
+		/*if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
 		{	
 			original.push_back(new enemy("big_zombie_idle_anim_f3.png"));
 			original[original.size() - 1]->pos = cursor;
@@ -34,14 +43,14 @@ int main()
 		for (int i = 0; i < original.size(); i++)
 		{
 			original[i]->update();
-		}
+		}*/
 
 		ClearBackground(RAYWHITE);
 
-		for (int i = 0; i < original.size(); i++)
+		/*for (int i = 0; i < original.size(); i++)
 		{
 			original[i]->draw();
-		}
+		}*/
 
 		EndDrawing();
 	}
