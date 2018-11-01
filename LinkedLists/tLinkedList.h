@@ -90,24 +90,31 @@ inline const T & tForwardList<T>::front() const
 template<typename T>
 inline void tForwardList<T>::remove(const T & val)
 {
-	// to do 
-	Node * prev = nullptr;
+	Node *prev = nullptr;
 	Node *current = head;
+	Node *temp = nullptr;
 
 	while (current != nullptr)
 	{
-		if (current->next->data == val)
-		{	
-			prev = head; // first [* - -]
+		if (current->data == val)
+		{
+			temp = current;
+			current = current->next;
 
-			head = head->next; // second [- * -] & one being deleted
-			temp = head->next; // third [- - *]
-			delete head; // delete second
+			delete temp;
+		}
+		else if (current->next->data == val)
+		{
+			prev = current;
+			temp = current->next;
+			current = temp->next;
 
-			prev->next = temp; // one after first = third
-			head = prev; // head is equal to first one again 
+			delete temp;
+
+			prev->next = current;
 		}
 	}
+	return;
 }
 
 template<typename T>
