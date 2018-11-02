@@ -4,7 +4,7 @@
 class player
 {
 public:
-	int health = 100;
+	int health = 1000;
 	bool enabled = false;
 	bool death = false;
 

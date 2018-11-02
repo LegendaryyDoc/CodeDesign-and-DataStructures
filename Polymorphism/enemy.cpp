@@ -4,19 +4,19 @@
 
 bool enemy::follow(const Vector2 & dest)
 {
-	if (dest.x > position.x)
+	if (dest.x >= position.x)
 	{
 		position.x += speed;
 	}
-	if (dest.x < position.x)
+	if (dest.x <= position.x)
 	{
 		position.x -= speed;
 	}
-	if (dest.y > position.y)
+	if (dest.y >= position.y)
 	{
 		position.y += speed;
 	}
-	if (dest.y < position.y)
+	if (dest.y <= position.y)
 	{
 		position.y -= speed;
 	}

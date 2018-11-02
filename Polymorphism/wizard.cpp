@@ -3,9 +3,9 @@
 #include <iostream>
 #include <string>
 
-void wizard::draw()
+void wizard::draw(Color h)
 {
-	DrawTexture(mySprite, position.x, position.y, WHITE);
+	DrawTexture(mySprite, position.x, position.y, h);
 }
 
 wizard::wizard(const std::string & fileName)

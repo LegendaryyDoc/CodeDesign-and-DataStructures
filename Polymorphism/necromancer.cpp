@@ -8,6 +8,11 @@ void necromancer::draw()
 	DrawTexture(mySprite, position.x, position.y, WHITE);
 }
 
+void necromancer::endDraw(Color h)
+{
+	DrawTextureEx(mySprite, position, 0, 3, h);
+}
+
 necromancer::necromancer(const std::string & fileName)
 {
 	std::cout << "Creating sprite!" << std::endl;
@@ -22,19 +27,19 @@ necromancer::~necromancer()
 
 bool necromancer::follow(const Vector2 & dest)
 {
-	if (dest.x + 20 > position.x)
+	if (dest.x + 10 > position.x)
 	{
 		position.x += speed;
 	}
-	if (dest.x - 20 < position.x)
+	if (dest.x - 10 < position.x)
 	{
 		position.x -= speed;
 	}
-	if (dest.y + 20 > position.y)
+	if (dest.y + 10 > position.y)
 	{
 		position.y += speed;
 	}
-	if (dest.y - 20 < position.y)
+	if (dest.y - 10 < position.y)
 	{
 		position.y -= speed;
 	}

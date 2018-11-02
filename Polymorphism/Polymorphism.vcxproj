@@ -132,6 +132,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="barbarian.cpp" />
+    <ClCompile Include="endScreenDrawing.cpp" />
     <ClCompile Include="enemy.cpp" />
     <ClCompile Include="imp.cpp" />
     <ClCompile Include="main.cpp" />
@@ -144,6 +145,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="barbarian.h" />
+    <ClInclude Include="endScreenDrawing.h" />
     <ClInclude Include="enemy.h" />
     <ClInclude Include="imp.h" />
     <ClInclude Include="necromancer.h" />

@@ -6,7 +6,7 @@ class enemy
 public:
 	bool enabled = false;
 
-	int damage = 5;
+	int damage = 1;
 
 	Rectangle rec;
 
