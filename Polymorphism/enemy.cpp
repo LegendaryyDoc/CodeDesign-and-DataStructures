@@ -20,6 +20,7 @@ bool enemy::follow(const Vector2 & dest)
 	{
 		position.y -= speed;
 	}
+
 	return true;
 }
 
@@ -45,3 +46,4 @@ void enemy::draw()
 {
 	DrawTexture(mySprite, position.x, position.y, WHITE);
 }
+	

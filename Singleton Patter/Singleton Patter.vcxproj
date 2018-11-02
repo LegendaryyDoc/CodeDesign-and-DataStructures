@@ -20,8 +20,8 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
-    <ProjectGuid>{F243F256-B1CB-4B04-A20A-AEEFC9CBFFED}</ProjectGuid>
-    <RootNamespace>raygame</RootNamespace>
+    <ProjectGuid>{88FB27F7-55BD-4120-9AC2-C0D28C1B51A4}</ProjectGuid>
+    <RootNamespace>SingletonPatter</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -70,7 +70,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup />
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
@@ -83,7 +83,7 @@
       <AdditionalDependencies>raylib.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
@@ -131,27 +131,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="barbarian.cpp" />
-    <ClCompile Include="enemy.cpp" />
-    <ClCompile Include="imp.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="necromancer.cpp" />
-    <ClCompile Include="ogre.cpp" />
-    <ClCompile Include="picker.cpp" />
-    <ClCompile Include="player.cpp" />
     <ClCompile Include="state.cpp" />
-    <ClCompile Include="wizard.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="barbarian.h" />
-    <ClInclude Include="enemy.h" />
-    <ClInclude Include="imp.h" />
-    <ClInclude Include="necromancer.h" />
-    <ClInclude Include="ogre.h" />
-    <ClInclude Include="picker.h" />
-    <ClInclude Include="player.h" />
     <ClInclude Include="state.h" />
-    <ClInclude Include="wizard.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

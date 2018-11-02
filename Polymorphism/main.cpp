@@ -18,6 +18,7 @@
 #include "necromancer.h"
 #include "enemy.h"
 #include "barbarian.h"
+#include "state.h"
 #include <iostream>
 #include <ctime>
 #include <vector>
@@ -34,6 +35,9 @@ int main()
 
 	srand(time(NULL));
 
+	GameState::GetInstance().setState(0);
+	GameState::GetInstance().getState();
+
 	picker wiz("wizzard_f_idle_anim_f0.png", {200,200});
 	picker bar("knight_f_idle_anim_f0.png", {500, 200});
 
@@ -42,32 +46,11 @@ int main()
 
 	player * pl = nullptr;
 	
-	std::vector<enemy *> en;
+	std::vector<enemy *> en; // creating enemy array
 
-	en.push_back(new necromancer("necromancer_idle_anim_f0.png"));
-	en.push_back(new necromancer("necromancer_idle_anim_f0.png"));
-	en.push_back(new necromancer("necromancer_idle_anim_f0.png"));
-	en.push_back(new necromancer("necromancer_idle_anim_f0.png"));
-	en.push_back(new necromancer("necromancer_idle_anim_f0.png"));
-	en.push_back(new imp("imp_idle_anim_f0.png"));
-	en.push_back(new imp("imp_idle_anim_f0.png"));
-	en.push_back(new imp("imp_idle_anim_f0.png"));
-	en.push_back(new imp("imp_idle_anim_f0.png"));
-	en.push_back(new imp("imp_idle_anim_f0.png"));
-	en.push_back(new imp("imp_idle_anim_f0.png"));
-	en.push_back(new imp("imp_idle_anim_f0.png"));
+	en.push_back(new necromancer("necromancer_idle_anim_f0.png")); // adding enemies to the array
 	en.push_back(new imp("imp_idle_anim_f0.png"));
 	en.push_back(new ogre("ogre_idle_anim_f0.png"));
-	en.push_back(new ogre("ogre_idle_anim_f0.png"));
-	en.push_back(new ogre("ogre_idle_anim_f0.png"));
-	en.push_back(new ogre("ogre_idle_anim_f0.png"));
-	en.push_back(new ogre("ogre_idle_anim_f0.png"));
-	en.push_back(new ogre("ogre_idle_anim_f0.png"));
-	en.push_back(new ogre("ogre_idle_anim_f0.png"));
-	en.push_back(new ogre("ogre_idle_anim_f0.png"));
-	en.push_back(new ogre("ogre_idle_anim_f0.png"));
-	en.push_back(new ogre("ogre_idle_anim_f0.png"));
-	
 
 	en.size();
 
@@ -89,30 +72,29 @@ int main()
 	int randNumX = rand() % 750;
 	int randNumY = rand() % 400;
 
-	for (int i = 0; i < en.size(); i++)
+	for (int i = 0; i < en.size(); i++) // spawning enemies at random location
 	{
 		randNumX = rand() % 750;
 		randNumY = rand() % 400;
 		en[i]->position = { (float)(randNumX), (float)(randNumY) };
 	}
 
-	bool waitingForChoice = true;
-	while (waitingForChoice)
+	while (GameState::GetInstance().getState() == 0) // starting screen
 	{
-		wiz.CheckForClick();
+		wiz.CheckForClick(); // checking for a collision with wiz box and cursor
 		if (wiz.CheckForClick())
 		{
-			pl = &urawizard;
+			pl = &urawizard; // setting player to be wizard
 			pl->enabled = true;
-			waitingForChoice = false;
+			GameState::GetInstance().setState(1); // once wiz is picked changes state to play the game
 		}
 
-		bar.CheckForClick();
+		bar.CheckForClick(); // checking for a collision with barb box and cursor
 		if (bar.CheckForClick())
 		{
-			pl = &ogh;
+			pl = &ogh; // setting player to be barbarian
 			pl->enabled = true;
-			waitingForChoice = false;
+			GameState::GetInstance().setState(1); // once barb is picked changes state to play the game
 		}
 
 		BeginDrawing();
@@ -122,29 +104,56 @@ int main()
 
 		DrawText("Choose a character!", 250, 100, 20, MAROON);
 
-		wiz.draw();
-		wiz.position = { 200, 200 };
+		wiz.draw();                   // drawing wiz
+		wiz.position = { 200, 200 };  // at this position
 
-		bar.draw();
-		bar.position = { 500, 200 };
+		bar.draw();                   // drawing barb
+		bar.position = { 500, 200 };  // at this postion
 
 		EndDrawing();
 	}
 
 	/*-----------------------------------------------------------*/
 
-	while (!WindowShouldClose())
+	while (GameState::GetInstance().getState() == 1) // game
 	{
 		Vector2 cursor = GetMousePosition();
 
-		pl->moveTo({cursor.x, cursor.y});
+		pl->moveTo({cursor.x, cursor.y}); // moves to cursor
 
 		if (!IsKeyDown(KEY_H))
 		{
 			for (int i = 0; i < en.size(); i++)
 			{
-				en[i]->follow(pl->position);
+				en[i]->follow(pl->position); // follows the player position
 			}
+		}
+
+		for (int i = 0; i < en.size(); i++) // player taking damage if they collide
+		{
+			en[i]->rec.x = en[i]->position.x;
+			en[i]->rec.y = en[i]->position.y;
+			en[i]->rec.height = en[i]->mySprite.height * 2;
+			en[i]->rec.width = en[i]->mySprite.width * 2;
+
+			DrawRectangle(en[i]->rec.x, en[i]->rec.y, en[i]->rec.width, en[i]->rec.height, RED);
+
+			pl->rec.x = pl->position.x;
+			pl->rec.y = pl->position.y;
+			pl->rec.height = pl->mySprite.height * 2;
+			pl->rec.width = pl->mySprite.width * 2;
+
+			DrawRectangle(pl->rec.x, pl->rec.y, pl->rec.width, pl->rec.height, RED);
+
+			if (CheckCollisionRecs(pl->rec, en[i]->rec))
+			{
+				pl->takeDamage(en[i]->damage);
+				std::cout << pl->health << std::endl;
+			}
+		}
+		if (pl->death == true)
+		{
+			GameState::GetInstance().setState(2); // if dead goes to death screen
 		}
 
 		BeginDrawing();
@@ -153,17 +162,32 @@ int main()
 
 		if (IsKeyDown(KEY_H)) 
 		{
-			pl->draw(Color{255,255,255,90});
+			pl->draw(Color{255,255,255,90}); // if H is down the player becomes more transparent and enemies will not follow
 		}
 		else if (!IsKeyDown(KEY_H))
 		{
-			pl->draw(WHITE);
+			pl->draw(WHITE); // draws player
 		}
 
 		for (int i = 0; i < en.size(); i++)
 		{
-			en[i]->draw();
+			en[i]->draw(); // draws enemies
 		}
+
+		EndDrawing();
+	}
+
+	/*-----------------------------------------------------------*/
+
+	while (GameState::GetInstance().getState() == 2) // death screen
+	{
+		std::cout << "dead" << std::endl;
+
+		BeginDrawing();
+
+		ClearBackground(RAYWHITE);
+
+		DrawText("YOU HAVE DIED!", 190, 200, 50, RED); // shows text on screen
 
 		EndDrawing();
 	}
@@ -171,3 +195,4 @@ int main()
 
 	return 0;
 }
+

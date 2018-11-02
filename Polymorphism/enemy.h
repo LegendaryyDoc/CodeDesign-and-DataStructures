@@ -6,6 +6,10 @@ class enemy
 public:
 	bool enabled = false;
 
+	int damage = 5;
+
+	Rectangle rec;
+
 	Vector2 position;
 	float speed = 1.0f;
 	Texture2D mySprite;

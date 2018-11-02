@@ -5,7 +5,21 @@
 bool player::moveTo(const Vector2 & dest)
 {
 	std::cout << "player moving" << std::endl;
+
 	return false;
+}
+
+void player::takeDamage(int damage)
+{
+	if (health >= 0)
+	{
+		health -= damage;
+		death = false;
+	}
+	else
+	{
+		death = true;
+	}
 }
 
 player::player(const std::string & fileName)

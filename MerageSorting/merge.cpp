@@ -12,20 +12,6 @@ void merge::Merge(int * arr, size_t p, size_t q, size_t r)
 
 	int * rs = new int[rightEnd];
 
-	//std::vector<int> l;
-	//std::vector<int> ri;
-
-	//std::string l;
-	//std::string ri;
-
-	//l.capacity = leftEnd;
-	//ri.capacity = rightEnd;
-
-	//l[leftEnd];
-	//ri[rightEnd];
-
-
-
 	for (int i = 0; i < leftEnd; i++)
 	{
 		ls[i] = arr[p + i];
