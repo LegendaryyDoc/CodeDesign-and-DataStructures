@@ -12,5 +12,11 @@ int main() {
 	//prune the bottom 3 scores from the table
 	hst.pruneBottomNNScores(3);
 
+	std::cout << "\n\n\n\n";
+
+	topScores = hst.topNNScores(10);
+
+	hst.hsTableSave("highScores.txt");
+
 	return 0;
 }
