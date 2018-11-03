@@ -183,6 +183,8 @@ int main()
 				en[i]->draw(); // draws enemies
 			}
 
+			DrawText(std::to_string(pl->health / 10).c_str(), 725, 25, 25, RED);
+
 			EndDrawing();
 		}
 
@@ -196,6 +198,7 @@ int main()
 
 		Vector2 followPos = { 850, 325 };
 
+		float deathY = -10;
 
 		while (GameState::GetInstance().getState() == 2) // death screen
 		{
@@ -210,7 +213,15 @@ int main()
 
 			ClearBackground(RAYWHITE);
 
-			DrawText("YOU HAVE DIED!", 190, 125, 50, RED); // shows text on screen
+			if (deathY < 125)
+			{
+				DrawText("YOU HAVE DIED!", 190, deathY, 50, RED); // shows text on screen
+				deathY += .4;
+			}
+			else if (deathY >= 125)
+			{
+				DrawText("YOU HAVE DIED!", 190, deathY, 50, RED); // shows text on screen
+			}
 
 			skelChar.endDraw(WHITE);
 			n.endDraw(WHITE);
