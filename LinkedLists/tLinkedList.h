@@ -92,26 +92,24 @@ inline void tForwardList<T>::remove(const T & val)
 {
 	Node *prev = nullptr;
 	Node *current = head;
-	Node *temp = nullptr;
 
 	while (current != nullptr)
 	{
 		if (current->data == val)
 		{
-			temp = current;
-			current = current->next;
+			if (prev != NULL)
+			{
+				prev->next = current->next;
+			}
 
-			delete temp;
+			Node* temp = current->next;
+			delete current;
+			current = temp;
 		}
-		else if (current->next->data == val)
+		else
 		{
 			prev = current;
-			temp = current->next;
-			current = temp->next;
-
-			delete temp;
-
-			prev->next = current;
+			current = prev->next;
 		}
 	}
 	return;
