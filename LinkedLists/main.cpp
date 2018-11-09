@@ -16,12 +16,21 @@ int main()
 	link.push_front(5);
 	link.push_front(5);
 	link.push_front(5);
-	link.remove(5);
+	//link.remove(5);
+
+	tForwardList<int> copy(link);
 
 	while (!link.empty())
 	{
 		std::cout << link.front() << std::endl;
 		link.pop_front();
+	}
+	std::cout << "\n\n" << std::endl;
+
+	while (!copy.empty())
+	{
+		std::cout << copy.front() << std::endl;
+		copy.pop_front();
 	}
 
 	return 0;

@@ -47,6 +47,8 @@ int main()
 
 	player * pl = nullptr;
 	
+
+
 	std::vector<enemy *> en; // creating enemy array
 
 	en.push_back(new necromancer("necromancer_idle_anim_f0.png")); // adding enemies to the array

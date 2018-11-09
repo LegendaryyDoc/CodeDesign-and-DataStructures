@@ -17,6 +17,9 @@ public:
 	tForwardList();                 // default constructor
 	~tForwardList();                // destructor
 
+	tForwardList(const tForwardList& other);            // copy-constructor
+	//tForwardList& operator=(const tForwardList &rhs);   // copy-assignment
+
 	void push_front(const T& val);  // adds element to front (i.e. head)
 	void pop_front();               // removes element from front
 
@@ -45,6 +48,40 @@ inline tForwardList<T>::~tForwardList()
 {
 
 }
+
+template<typename T>
+inline tForwardList<T>::tForwardList(const tForwardList & other)
+{
+	Node *current = other.head;
+	Node *copy = NULL;
+	Node *last = NULL;
+
+	while (current != NULL)
+	{	
+		copy = new Node;
+
+		if (head == NULL)
+		{
+			head = copy;
+		}
+
+		copy->data = current->data;
+		if (last != NULL)
+		{
+			last->next = copy;
+		}
+		current = current->next;
+		copy->next = NULL;
+		last = copy;
+	}
+}
+
+/*template<typename T>
+inline tForwardList & tForwardList<T>::operator=(const tForwardList & rhs)
+{
+	// TODO: insert return statement here
+
+}*/
 
 template<typename T>
 inline void tForwardList<T>::push_front(const T & val)

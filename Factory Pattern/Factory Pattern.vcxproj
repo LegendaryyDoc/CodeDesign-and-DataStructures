@@ -146,6 +146,7 @@
     <ClInclude Include="IFactory.h" />
     <ClInclude Include="RedBox.h" />
     <ClInclude Include="SimpleSprite.h" />
+    <ClInclude Include="tObjectPool.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
