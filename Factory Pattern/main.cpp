@@ -5,6 +5,7 @@
 #include "Factory.h"
 #include "FallingFactory.h"
 #include "SimpleSprite.h"
+#include "tObjectPool.h"
 #include "raylib.h"
 
 #include <ctime>
@@ -24,7 +25,10 @@ int main()
 
 	FallingFactory::init();
 
-	std::vector<SimpleSprite*> sprites;
+
+
+	/*-------   Old Version   -------*/
+	/*std::vector<SimpleSprite*> sprites;
 	
 	float nTimer = 2.0f;
 	float cTimer = 5.0f;
@@ -34,6 +38,7 @@ int main()
 	{
 		nTimer += GetFrameTime();
 		cTimer += GetFrameTime();
+		
 		if (nTimer > 2.0f)
 		{
 			nTimer = 0;
@@ -63,6 +68,50 @@ int main()
 		}
 		EndDrawing();
 	}
-	CloseWindow();        
+	CloseWindow();*/ 
+
+	/*-------   New Version   -------*/
+	tObjectPool<SimpleSprite> sprites(10);
+	std::vector<SimpleSprite*> render;
+
+	float nTimer = 2.0f;
+
+	while (!WindowShouldClose())    // Detect window close button or ESC key
+	{
+		nTimer += GetFrameTime();
+		
+		if (sprites.free)
+		{
+			if (nTimer > 2.0f)
+			{
+				nTimer = 0;
+				SimpleSprite* temp = sprites.retrieve();
+				render.push_back[FallingFactory::getFromType("rock")] = sprites;
+			}
+		}
+		BeginDrawing();
+
+		ClearBackground(RAYWHITE);
+
+		for (int i = 0; i < sprites.capacity(); ++i)
+		{
+			if (render[i]->pos.y < screenHeight)
+			{
+
+			}
+			else
+			{
+				render[i]->translate({ 0, 50 * GetFrameTime() });
+				render[i]->draw();
+				if (render[i]->r2.y > screenHeight)
+				{
+					render[i]->r2.y = -100;
+				}
+			}
+		}
+		EndDrawing();
+	}
+	CloseWindow();
+
 	return 0;
 }
