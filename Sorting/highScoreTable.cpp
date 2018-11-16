@@ -163,14 +163,13 @@ std::vector<HighScoreEntry> HighScoreTable::topNNScores(int topRows)
 			std::cout << "Name: " << hsVector[i].name << " Score: " << hsVector[i].score << " Level: " << hsVector[i].level << std::endl;
 		}
 	}
-
 	return std::vector<HighScoreEntry>();
 }
 
 bool HighScoreTable::pruneBottomNNScores(int bottomRows)
 {
 	// removes the bottom score
-	for (int i = 0; i < bottomRows; i++)
+	for (int i = 0; i <= bottomRows; i++)
 	{
 		hsVector.pop_back();
 	}

@@ -11,6 +11,7 @@
 #include <ctime>
 
 #include <vector>
+#include <algorithm>
 
 int main()
 {
@@ -71,7 +72,9 @@ int main()
 	CloseWindow();*/ 
 
 	/*-------   New Version   -------*/
-	tObjectPool<SimpleSprite> sprites(10);
+	int poolSize = 10;
+
+	tObjectPool<SimpleSprite> sprites(poolSize);
 	std::vector<SimpleSprite*> render;
 
 	float nTimer = 2.0f;
@@ -86,27 +89,31 @@ int main()
 			{
 				nTimer = 0;
 				SimpleSprite* temp = sprites.retrieve();
-				render.push_back[FallingFactory::getFromType("rock")] = sprites;
+				if (temp != NULL)
+				{
+					render.push_back(temp);
+					std::cout << "RETRIEVE" << std::endl;
+					*render.back() = *FallingFactory::getFromType("rock");
+				}
 			}
 		}
 		BeginDrawing();
 
 		ClearBackground(RAYWHITE);
 
-		for (int i = 0; i < sprites.capacity(); ++i)
+		for (int i = 0; i < render.size(); ++i)
 		{
-			if (render[i]->pos.y < screenHeight)
+			if (render[i]->r2.y > screenHeight)
 			{
-
+				std::cout << "RECYCLE" << std::endl;
+				sprites.recycle(render[i]);
+				render.erase(std::remove(render.begin(), render.end(), render[i]), render.end());
 			}
+
 			else
 			{
 				render[i]->translate({ 0, 50 * GetFrameTime() });
 				render[i]->draw();
-				if (render[i]->r2.y > screenHeight)
-				{
-					render[i]->r2.y = -100;
-				}
 			}
 		}
 		EndDrawing();

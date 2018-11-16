@@ -13,12 +13,29 @@ class tForwardList
 
 	Node * head;                    // pointer to head of linked list
 
+	class iterator
+	{
+		Node * cur;                                 // current node being operated upon
+
+	public:
+		iterator();									// defaults cur to NULL
+		iterator(Node * start);						// defaults cur to the provided node
+
+		bool operator==(const iterator& rhs) const; // returns true if the iterator points to the same node
+		bool operator!=(const iterator& rhs) const; // returns false if the iterator does not point to the same node
+		T& operator*() const;                       // returns a reference to the element pointed to by the current node
+		iterator& operator++();                     // pre-increment (returns a reference to this iterator after it is incremented)
+		iterator operator++(int);                   // post-increment (returns an iterator to current node while incrementing the existing iterator)
+	};
+
+	
+
 public:
 	tForwardList();                 // default constructor
 	~tForwardList();                // destructor
 
 	tForwardList(const tForwardList& other);            // copy-constructor
-	//tForwardList& operator=(const tForwardList &rhs);   // copy-assignment
+	tForwardList& operator=(const tForwardList & rhs);   // copy-assignment
 
 	void push_front(const T& val);  // adds element to front (i.e. head)
 	void pop_front();               // removes element from front
@@ -31,11 +48,80 @@ public:
 	bool empty() const;             // Returns true if there are no elements
 	void clear();                   // Destroys every single node in the linked list
 	void resize(size_t newSize);    // Resizes the linked list to contain the given number of elements
-									// New elements are default-initialized
+	
+	iterator begin();
+	iterator end();// New elements are default-initialized
 };
 
 /*----------------------------------------------------------*/
 /*----------------------------------------------------------*/
+
+template<typename T>
+typename tForwardList<T>::iterator tForwardList<T>::begin()
+{
+	// return the head of the linked list
+	return iterator(head);
+}
+
+template<typename T>
+typename tForwardList<T>::iterator tForwardList<T>::end()
+{
+	return iterator(nullptr);
+}
+
+
+template<typename T>
+inline tForwardList<T>::iterator::iterator()
+{
+	cur = NULL;
+}
+
+template<typename T>
+inline tForwardList<T>::iterator::iterator(Node * start)
+{
+	cur = start;
+}
+
+template<typename T>
+typename bool tForwardList<T>::iterator::operator==(const iterator & rhs) const
+{
+	return cur == rhs.cur;
+}
+
+template<typename T>
+typename bool tForwardList<T>::iterator::operator!=(const iterator & rhs) const
+{
+	return cur != rhs.cur;
+}
+
+template<typename T>
+typename T & tForwardList<T>::iterator::operator*() const
+{
+	// TODO: insert return statement here
+	return cur->data;
+}
+
+template<typename T>
+typename tForwardList<T>::iterator & tForwardList<T>::iterator::operator++()
+{
+	cur = cur->next;
+	return *this;
+}
+
+template<typename T>
+typename tForwardList<T>::iterator tForwardList<T>::iterator::operator++(int)
+{
+	iterator copy = *this;
+
+	cur = cur->next;
+
+	return copy;
+}
+
+
+/*----------------------------------------------------------------*/
+/*----------------------------------------------------------------*/
+
 
 template<typename T>
 inline tForwardList<T>::tForwardList()
@@ -76,12 +162,34 @@ inline tForwardList<T>::tForwardList(const tForwardList & other)
 	}
 }
 
-/*template<typename T>
-inline tForwardList & tForwardList<T>::operator=(const tForwardList & rhs)
+template<typename T>
+inline tForwardList<T> & tForwardList<T>::operator=(const tForwardList<T> & rhs)
 {
-	// TODO: insert return statement here
+	Node *current = rhs.head;
+	Node *copy = NULL;
+	Node *last = NULL;
 
-}*/
+	while (current != NULL)
+	{
+		copy = new Node;
+
+		if (head == NULL)
+		{
+			head = copy;
+		}
+
+		copy->data = current->data;
+		if (last != NULL)
+		{
+			last->next = copy;
+		}
+		current = current->next;
+		copy->next = NULL;
+		last = copy;
+	}
+	return *this;
+}
+
 
 template<typename T>
 inline void tForwardList<T>::push_front(const T & val)
@@ -142,6 +250,11 @@ inline void tForwardList<T>::remove(const T & val)
 			Node* temp = current->next;
 			delete current;
 			current = temp;
+
+			if (prev == NULL)
+			{
+				head = current;
+			}
 		}
 		else
 		{
@@ -194,3 +307,5 @@ inline void tForwardList<T>::resize(size_t newSize)
 		head = temp;
 	}
 }
+
+

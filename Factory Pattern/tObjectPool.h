@@ -13,7 +13,7 @@ public:
 	~tObjectPool();                      // destroys all objects
 
 	T* pool;							// all objects stored in the pool
-	bool* free = true;					// indicates whether an object is available
+	bool* free;					// indicates whether an object is available
 	size_t count;
 
 	T* retrieve();                      // returns a pointer to an object that will be used (returns null if none available)
@@ -25,12 +25,20 @@ public:
 template<typename T>
 inline tObjectPool<T>::tObjectPool()
 {
+	pool = nullptr;
+	count = 0;
 }
 
 template<typename T>
 inline tObjectPool<T>::tObjectPool(size_t initialCapacity)
 {
-	pool = new tObjectPool [initialCapacity];
+	pool = new T[initialCapacity];
+	free = new bool[initialCapacity];
+	for (int i = 0; i < initialCapacity; ++i)
+	{
+		free[i] = true;
+	}
+	count = initialCapacity;
 }
 
 template<typename T>
@@ -42,28 +50,33 @@ inline tObjectPool<T>::~tObjectPool()
 template<typename T>
 inline T * tObjectPool<T>::retrieve()
 {
-	for (int i = 0; i <= count; i++)
+	for (int i = 0; i < count; i++)
 	{
-		if (pool[i].free == true)
+		if (free[i] == true)
 		{
-			pool[i].free == false;
+			free[i] = false;
 			return &pool[i];
 		}
-		else
-		{
-			return NULL;
-		}
 	}
+
+	return NULL;
 }
 
 template<typename T>
 inline void tObjectPool<T>::recycle(T * obj)
 {
-	pool[obj].free == true;
+	for (int i = 0; i < count; i++)
+	{
+		if (&pool[i] == obj)
+		{
+			free[i] = true;
+			break;
+		}
+	}
 }
 
 template<typename T>
 inline size_t tObjectPool<T>::capacity()
 {
-	return pool.capacity();
+	return count;
 }
