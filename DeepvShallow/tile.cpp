@@ -24,5 +24,5 @@ Tile::~Tile()
 
 void Tile::refresh()
 {
-	DrawTexture(texture, 0, 0, WHITE);
+	DrawTextureEx(texture, { 0,0 }, 0.0f, 4.0f, WHITE);
 }

@@ -5,8 +5,12 @@
 class masterTile
 {
 public:
-	Tile tiles[15];
-	int grid[104];
+	bool on[364];
+	int numberType[364];
+	Tile tiles[9];
+	int grid[364];
+
+	//Rectangle rec;
 
 	void draw();
 };

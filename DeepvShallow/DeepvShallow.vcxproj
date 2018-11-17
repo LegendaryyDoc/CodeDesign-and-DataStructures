@@ -139,15 +139,21 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Barbarian.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="master.cpp" />
     <ClCompile Include="mousePickup.cpp" />
+    <ClCompile Include="player.cpp" />
     <ClCompile Include="tile.cpp" />
+    <ClCompile Include="Wizard.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Barbarian.h" />
     <ClInclude Include="master.h" />
     <ClInclude Include="mousePickup.h" />
+    <ClInclude Include="player.h" />
     <ClInclude Include="tile.h" />
+    <ClInclude Include="Wizard.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
