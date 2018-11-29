@@ -146,6 +146,7 @@
     <ClCompile Include="player.cpp" />
     <ClCompile Include="tile.cpp" />
     <ClCompile Include="Wizard.cpp" />
+    <ClCompile Include="wizAttack.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Barbarian.h" />
@@ -154,6 +155,7 @@
     <ClInclude Include="player.h" />
     <ClInclude Include="tile.h" />
     <ClInclude Include="Wizard.h" />
+    <ClInclude Include="wizAttack.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

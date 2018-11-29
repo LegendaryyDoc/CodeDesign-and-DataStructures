@@ -7,6 +7,10 @@ void player::moveTo()
 	std::cout << "player moving" << std::endl;
 }
 
+void player::attack(Vector2 pos)
+{
+}
+
 void player::takeDamage(int damage)
 {
 	if (health >= 0)

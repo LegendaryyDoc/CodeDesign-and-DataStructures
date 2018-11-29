@@ -33,8 +33,11 @@
     <ClCompile Include="Wizard.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="wizAttack.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="player.cpp">
-      <Filter>Resource Files</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -54,6 +57,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="player.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="wizAttack.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,11 +1,14 @@
 #include "raylib/raylib.h"
 #include "tile.h"
 #include "master.h"
+#include "wizAttack.h"
 #include "Wizard.h"
 #include "player.h"
 #include "Barbarian.h"
 #include <ctime>
+#include <cmath>
 #include <fstream>
+#include <vector>
 
 void loadMap(std::string fileName, masterTile &master);
 
@@ -42,6 +45,8 @@ int main()
 	
 	loadMap("map.txt", master);
 
+	std::vector<wizAttack *> att;
+	float spellsCastedTime = 0;
 
 	wizard wiz("wizzard_f_idle_anim_f0.png");
 	barb bar("knight_f_idle_anim_f0.png");
@@ -72,11 +77,28 @@ int main()
 
 	while (alive) // game
 	{
+		if (pl->health <= 0)
+		{
+			alive = false;
+		}
+
+		spellsCastedTime += 0.002f;
+
 		SetWindowTitle(std::to_string(GetFPS()).c_str());
 			
 		Vector2 cursor = GetMousePosition();
 
 		pl->moveTo();
+
+		for (int i = 0; i < att.size(); i++)
+		{
+			att[i]->moveTo({ cursor.x, cursor.y });
+
+			att[i]->rec.height = att[i]->mySprite.height;
+			att[i]->rec.width = att[i]->mySprite.width;
+			att[i]->rec.x = att[i]->position.x;
+			att[i]->rec.y = att[i]->position.y;
+		}
 
 		pl->rec.x = pl->position.x;
 		pl->rec.y = pl->position.y;
@@ -87,16 +109,24 @@ int main()
 		for (int i = 0; i < 364; i++)
 		{
 			// build a rect for that tile if blank
-			Rectangle rec;
-			rec.height = 32;//  master.tiles->texture.height;
-			rec.width = 32; // master.tiles->texture.width;
-			rec.x = (i % 26)* 32;
-			rec.y = (i / 26) * 32;
+			Rectangle recTile;
+			recTile.height = 32;//  master.tiles->texture.height;
+			recTile.width = 32; // master.tiles->texture.width;
+			recTile.x = (i % 26)* 32;
+			recTile.y = (i / 26) * 32;
 
 			if (master.grid[i] == 0)
 			{
+				for (int i = 0; i < att.size(); ++i)
+				{
+					if (CheckCollisionRecs(att[i]->rec, recTile))
+					{
+						att.erase(att.begin() + i);
+					}
+				}
+
 				// compare against player
-				if (CheckCollisionRecs(pl->rec, rec))
+				if (CheckCollisionRecs(pl->rec, recTile))
 				{
 					if (IsKeyDown(KEY_W))
 					{
@@ -122,7 +152,7 @@ int main()
 
 			if(master.grid[i] != 0)
 			{
-				if (CheckCollisionCircleRec(pl->position, 2.0f, rec))
+				if (CheckCollisionCircleRec(pl->position, 2.0f, recTile))
 				{
 					master.on[i] = true;
 				}
@@ -132,6 +162,25 @@ int main()
 				}
 			}
 		}
+
+		for (int i = 0; i < att.size(); i++)
+		{
+			int cdist = 0;
+			int xdist = 0;
+			int ydist = 0;
+
+			xdist = att[i]->dest.x - att[i]->position.x;
+			ydist = att[i]->dest.y - att[i]->position.y;
+
+			cdist = ((xdist * xdist) + (ydist * ydist));
+			cdist = sqrtf(cdist);
+
+			if (cdist < 10.0f)
+			{
+				att.erase(att.begin() + i);
+			}
+		}
+
 		/*  Paint  */
 		/*
 		if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) 
@@ -168,6 +217,26 @@ int main()
 
 		ClearBackground(BLACK);
 
+		if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && spellsCastedTime >= 2.0f)
+		{
+			spellsCastedTime = 0;
+
+			att.push_back(new wizAttack("candy_02b.png"));
+			att.back()->position = pl->position;
+			att.back()->dest = cursor;
+
+			wizAttack& atk = *att.back();
+
+			Vector2 diff = { atk.dest.x - pl->position.x, atk.dest.y - pl->position.y };
+			float dist = sqrt(diff.x * diff.x + diff.y * diff.y);
+			diff.x /= dist;
+			diff.y /= dist;
+
+			atk.dir = diff;
+
+			std::cout << "yep" << std::endl;
+		}
+
 		for (int i = 0; i < 364; i++)
 		{
 			if (master.on[i] == true)
@@ -175,8 +244,13 @@ int main()
 				master.draw();
 			}
 		}
+
 		pl->draw(WHITE);
 
+		for (int i = 0; i < att.size(); ++i)
+		{
+			att[i]->draw();
+		}
 
 		EndDrawing();
 	}
