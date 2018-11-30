@@ -56,7 +56,7 @@ int main()
 
 	float spellsCastedTime = 0; // time before a spell can be casted
 	float enemySpawnTime = 0; // time before next enemy spawn
-	float enemySpawnTimeMax = 0.1f; // what the time has to hit to spawn an enemy
+	float enemySpawnTimeMax = 1.0f; // what the time has to hit to spawn an enemy
 	float enemyStrongerTimer = 0; // timer for making an enemy have more health
 	float damageTimer = 0; // timer for when enemy is allowed to damage
 	float damageTimerMax = 0.0f; // max time for damageTimer
