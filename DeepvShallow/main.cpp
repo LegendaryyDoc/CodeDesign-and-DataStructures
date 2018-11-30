@@ -67,7 +67,7 @@ int main()
 	int score = 0;
 	bool* opacity = NULL; // controlls opacity of the enemies
 
-	int gameState = 2;
+	int gameState = 0;
 
 	wizard wiz("wizzard_f_idle_anim_f0.png");
 	barb bar("knight_f_idle_anim_f0.png");
