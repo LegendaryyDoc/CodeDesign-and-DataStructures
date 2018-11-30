@@ -5,8 +5,10 @@
 #include "imp.h"
 #include "master.h"
 #include "wizAttack.h"
+#include "endScreneDrawing.h"
 #include "Wizard.h"
 #include "player.h"
+#include "buttonClick.h"
 #include "Barbarian.h"
 #include "highScoreTable.h"
 #include <vector>
@@ -65,8 +67,12 @@ int main()
 	int score = 0;
 	bool* opacity = NULL; // controlls opacity of the enemies
 
+	int gameState = 2;
+
 	wizard wiz("wizzard_f_idle_anim_f0.png");
 	barb bar("knight_f_idle_anim_f0.png");
+
+	button bStart; // start button
 
 	player * pl = nullptr;
 
@@ -90,9 +96,34 @@ int main()
 	int paintID = -1;
 
 	/*-------------------------------------------------------------*/
+	/*                 GameState StartingScreen                    */
 	/*-------------------------------------------------------------*/
 
-	while (pl->alive) // game
+	while (gameState == 0)
+	{
+		SetWindowTitle(std::to_string(GetFPS()).c_str());
+
+		bStart.CheckForClick();
+
+		if (bStart.CheckForClick())
+		{
+			gameState = 1;
+		}
+
+		BeginDrawing();
+
+		ClearBackground(BLACK);
+
+		bStart.draw();
+
+		EndDrawing();
+	}
+
+	/*-------------------------------------------------------------*/
+	/*                     GameState Game                          */
+	/*-------------------------------------------------------------*/
+
+	while (gameState == 1 && pl->alive) // game
 	{	
 		SetWindowTitle(std::to_string(GetFPS()).c_str());
 			
@@ -135,6 +166,12 @@ int main()
 			if (CheckCollisionRecs(pl->rec, en[i]->rec) && damageTimer >= damageTimerMax) // player take damage
 			{
 				pl->takeDamage(en[i]->damage);
+
+				if (!pl->alive)
+				{
+					gameState = 2;
+				}
+
 				healthBar -= 1;
 				damageTimer = 0.0f;
 
@@ -375,8 +412,6 @@ int main()
 
 		EndDrawing();
 	}
-	CloseWindow();
-
 	if (!pl->alive) // saving the new highscore back to file
 	{
 		if (score > hst.hsn)
@@ -385,6 +420,56 @@ int main()
 			hst.hsTableSave("hst.txt");
 		}
 	}
+
+	/*-------------------------------------------------------------*/
+	/*                      GAMESTATE DeathScene                   */
+	/*-------------------------------------------------------------*/
+
+	finalForm skelChar("skull.png");
+	imp i("imp_idle_anim_f0.png");
+	i.position = { -50, 325 };
+	i.speed = 40.0f;
+
+	Vector2 followPos = { 850, 325 };
+
+	bool end = false;
+
+	float deathY = -10;
+
+	while (gameState == 2 && !end)
+	{
+		SetWindowTitle(std::to_string(GetFPS()).c_str());
+
+		i.follow(followPos);
+
+		if (i.position.x > followPos.x - 40)
+		{
+			end = true;
+		}
+
+		BeginDrawing();
+
+		ClearBackground(BLACK);
+
+		if (deathY < 125)
+		{
+			DrawText("YOU HAVE DIED!", 190, deathY, 50, RED); // shows text on screen
+			deathY += 20 * GetFrameTime();
+		}
+		else if (deathY >= 125)
+		{
+			DrawText("YOU HAVE DIED!", 190, deathY, 50, RED); // shows text on screen
+		}
+
+		skelChar.endDraw(WHITE);
+		if (!end)
+		{
+			i.endDraw(WHITE);
+		}
+
+		EndDrawing();
+	}
+	CloseWindow();
 }
 
 void loadMap(std::string fileName, masterTile &master) // loading the map from file

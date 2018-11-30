@@ -51,6 +51,12 @@
     <ClCompile Include="highScoreTable.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="buttonClick.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="endScreenDrawing.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tile.h">
@@ -84,6 +90,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="highScoreTable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="buttonClick.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="endScreneDrawing.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -140,6 +140,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Barbarian.cpp" />
+    <ClCompile Include="buttonClick.cpp" />
+    <ClCompile Include="endScreenDrawing.cpp" />
     <ClCompile Include="enemy.cpp" />
     <ClCompile Include="highScoreEntry.cpp" />
     <ClCompile Include="highScoreTable.cpp" />
@@ -154,6 +156,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Barbarian.h" />
+    <ClInclude Include="buttonClick.h" />
+    <ClInclude Include="endScreneDrawing.h" />
     <ClInclude Include="enemy.h" />
     <ClInclude Include="highScoreEntry.h" />
     <ClInclude Include="highScoreTable.h" />

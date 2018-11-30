@@ -10,6 +10,8 @@ public:
 	float speed = 15.0f;
 
 	void draw();
+	void endDraw(Color h);
+
 	bool follow(const Vector2 &dest);
 
 	imp(const std::string & fileName);//assign the sprite image.

@@ -8,6 +8,11 @@ void imp::draw()
 	DrawTexture(mySprite, position.x, position.y, WHITE);
 }
 
+void imp::endDraw(Color h)
+{
+	DrawTextureEx(mySprite, position, 0, 3, h);
+}
+
 imp::imp(const std::string & fileName)
 {
 	std::cout << "Creating sprite!" << std::endl;
