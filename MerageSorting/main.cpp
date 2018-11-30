@@ -12,5 +12,7 @@ int main()
 
 	m.MergeSort(arr, 0, 11);
 
+	system("pause");
+
 	return 0;
 }

@@ -52,5 +52,6 @@ int main()
 		copy.pop_front();
 	}
 
+	system("pause");
 	return 0;
 }

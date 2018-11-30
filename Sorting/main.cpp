@@ -23,5 +23,7 @@ int main() {
 
 	//hst.hsTableSave("highScores.txt");
 
+	system("pause");
+
 	return 0;
 }
