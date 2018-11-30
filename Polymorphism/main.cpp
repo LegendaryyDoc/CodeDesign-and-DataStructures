@@ -46,8 +46,6 @@ int main()
 	barb ogh("knight_f_idle_anim_f0.png");
 
 	player * pl = nullptr;
-	
-
 
 	std::vector<enemy *> en; // creating enemy array
 

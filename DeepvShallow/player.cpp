@@ -7,20 +7,16 @@ void player::moveTo()
 	std::cout << "player moving" << std::endl;
 }
 
-void player::attack(Vector2 pos)
-{
-}
-
 void player::takeDamage(int damage)
 {
-	if (health >= 0)
+	if (health > 0)
 	{
 		health -= damage;
-		death = false;
+		alive = true;
 	}
 	else
 	{
-		death = true;
+		alive = false;
 	}
 }
 

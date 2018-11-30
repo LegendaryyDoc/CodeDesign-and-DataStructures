@@ -140,6 +140,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Barbarian.cpp" />
+    <ClCompile Include="enemy.cpp" />
+    <ClCompile Include="highScoreEntry.cpp" />
+    <ClCompile Include="highScoreTable.cpp" />
+    <ClCompile Include="imp.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="master.cpp" />
     <ClCompile Include="mousePickup.cpp" />
@@ -150,6 +154,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Barbarian.h" />
+    <ClInclude Include="enemy.h" />
+    <ClInclude Include="highScoreEntry.h" />
+    <ClInclude Include="highScoreTable.h" />
+    <ClInclude Include="imp.h" />
     <ClInclude Include="master.h" />
     <ClInclude Include="mousePickup.h" />
     <ClInclude Include="player.h" />

@@ -1,14 +1,20 @@
+#include <cassert>
 #include "raylib/raylib.h"
 #include "tile.h"
+#include "enemy.h"
+#include "imp.h"
 #include "master.h"
 #include "wizAttack.h"
 #include "Wizard.h"
 #include "player.h"
 #include "Barbarian.h"
+#include "highScoreTable.h"
+#include <vector>
 #include <ctime>
 #include <cmath>
 #include <fstream>
 #include <vector>
+#include <string>
 
 void loadMap(std::string fileName, masterTile &master);
 
@@ -17,12 +23,10 @@ int main()
 	InitWindow(832, 448, "pixel art game");
 	srand(time(NULL));
 
-	/*  Random placing  */
-
 	Texture fogTex = LoadTexture("fog.png");
 	Texture litTex = LoadTexture("light.png");
 
-	Tile floor01("floor_1.png");
+	Tile floor01("floor_1.png"); // map tiles
 	Tile floor02("floor_2.png");
 	Tile floor03("floor_3.png");
 	Tile floor04("floor_4.png");
@@ -45,52 +49,164 @@ int main()
 	
 	loadMap("map.txt", master);
 
-	std::vector<wizAttack *> att;
-	float spellsCastedTime = 0;
+	HighScoreTable hst("hst.txt");
+
+	std::vector<wizAttack *> att; // wizard attack arr
+	std::vector<enemy *> en; // enemy arr
+
+	float spellsCastedTime = 0; // time before a spell can be casted
+	float enemySpawnTime = 0; // time before next enemy spawn
+	float enemySpawnTimeMax = 0.1f; // what the time has to hit to spawn an enemy
+	float enemyStrongerTimer = 0; // timer for making an enemy have more health
+	float damageTimer = 0; // timer for when enemy is allowed to damage
+	float damageTimerMax = 0.0f; // max time for damageTimer
+
+	int healthBar = 20; // width of the health bar
+	int score = 0;
+	bool* opacity = NULL; // controlls opacity of the enemies
 
 	wizard wiz("wizzard_f_idle_anim_f0.png");
 	barb bar("knight_f_idle_anim_f0.png");
 
 	player * pl = nullptr;
 
-	pl = &wiz;
+	pl = &wiz; // setting player
 	pl->enabled = true;
-	pl->position = { 400,200 };
+	pl->position = { 400,200 }; // player starting position
 
-	for (int i = 0; i < 364; i++)
+	for (int i = 0; i < 364; i++) // creating the world tile numbers
 	{
 		if (master.numberType[i] == 0) // void tiles
 		{
 			master.grid[i] = 0;
 		}
-		else if (master.numberType[i] == 1)
+		else if (master.numberType[i] == 1) // walkable
 		{
 			int rNumber = (rand() % 7)+1;
 			master.grid[i] = rNumber;
 		}
-		
 	}
 	
 	int paintID = -1;
 
-	bool alive = true;
+	/*-------------------------------------------------------------*/
+	/*-------------------------------------------------------------*/
 
-	while (alive) // game
-	{
-		if (pl->health <= 0)
-		{
-			alive = false;
-		}
-
-		spellsCastedTime += 0.002f;
-
+	while (pl->alive) // game
+	{	
 		SetWindowTitle(std::to_string(GetFPS()).c_str());
 			
 		Vector2 cursor = GetMousePosition();
+		size_t test = en.size();
 
-		pl->moveTo();
+		/*-------------------------------------------------------------*/
+		/*                          ENEMY                              */
+		/*-------------------------------------------------------------*/
 
-		for (int i = 0; i < att.size(); i++)
+		enemySpawnTime += GetFrameTime(); // adding onto the time before next enemy
+		enemyStrongerTimer += GetFrameTime(); // adding onto the time for enemy buff
+		damageTimer += GetFrameTime(); // adding onto timer for enemy damage allowed
+
+		if (enemySpawnTime >= enemySpawnTimeMax) // enemy creation when time limit is reached
+		{
+			en.push_back(new imp("imp_idle_anim_f0.png"));
+			en.back()->position = { (float)(rand() % 750), (float)(rand() % 400) };
+			en.back()->alive = true;
+			enemySpawnTime = 0;
+		}
+
+		for (int i = 0; i < en.size(); ++i) // update enemy hitbox
+		{
+			en[i]->follow(pl->position);
+			en[i]->shouldRender = true;
+
+			en[i]->rec.height = en[i]->mySprite.height;
+			en[i]->rec.width = en[i]->mySprite.width;
+			en[i]->rec.x = en[i]->position.x;
+			en[i]->rec.y = en[i]->position.y;
+
+			if (enemyStrongerTimer >= 20)
+			{
+				enemyStrongerTimer = 0;
+				en[i]->health += 5;
+			}
+
+			// enemy + player collision
+			if (CheckCollisionRecs(pl->rec, en[i]->rec) && damageTimer >= damageTimerMax) // player take damage
+			{
+				pl->takeDamage(en[i]->damage);
+				healthBar -= 1;
+				damageTimer = 0.0f;
+
+				en.erase(en.begin() + i);
+				continue;
+			}
+
+			bool enemyDied = false;
+
+			// enemy + attack collision
+			for (int j = 0; j < att.size(); ++j)
+			{
+				if (CheckCollisionRecs(att[j]->rec, en[i]->rec)) // enemy take damage
+				{
+					en[i]->takeDamage(att[j]->damage);
+
+					if (en[i]->health <= 0)
+					{
+						enemyDied = true;
+						en.erase(en.begin() + i);
+						++score;
+						break;
+					}
+				}
+			}
+
+			if (enemyDied) { continue; }
+		}
+
+		/*-------------------------------------------------------------*/
+		/*                       WIZARD ATTACK                         */
+		/*-------------------------------------------------------------*/
+
+		spellsCastedTime += 0.002f; // adding onto the time before next cast
+
+		if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && spellsCastedTime >= 2.0f) // wizard attack creation
+		{
+			spellsCastedTime = 0;
+
+			att.push_back(new wizAttack("candy_02b.png"));
+			att.back()->position = pl->position;
+			att.back()->dest = cursor;
+
+			wizAttack& atk = *att.back();
+
+			Vector2 diff = { atk.dest.x - pl->position.x, atk.dest.y - pl->position.y };
+			float dist = sqrt(diff.x * diff.x + diff.y * diff.y);
+			diff.x /= dist;
+			diff.y /= dist;
+
+			atk.dir = diff;
+		}
+
+		for (int i = 0; i < att.size(); i++) // deleting wizard attack if it is at destination
+		{
+			int cdist = 0;
+			int xdist = 0;
+			int ydist = 0;
+
+			xdist = att[i]->dest.x - att[i]->position.x;
+			ydist = att[i]->dest.y - att[i]->position.y;
+
+			cdist = ((xdist * xdist) + (ydist * ydist));
+			cdist = sqrtf(cdist);
+
+			if (cdist < 10.0f)
+			{
+				att.erase(att.begin() + i);
+			}
+		}
+
+		for (int i = 0; i < att.size(); i++) // wizards attack hitbox and moveto
 		{
 			att[i]->moveTo({ cursor.x, cursor.y });
 
@@ -100,28 +216,51 @@ int main()
 			att[i]->rec.y = att[i]->position.y;
 		}
 
-		pl->rec.x = pl->position.x;
+		/*-------------------------------------------------------------*/
+		/*                          PLAYER                             */
+		/*-------------------------------------------------------------*/
+
+		pl->moveTo(); // player movement
+
+		pl->rec.x = pl->position.x; // player hitbox
 		pl->rec.y = pl->position.y;
 		pl->rec.height = pl->mySprite.height;
 		pl->rec.width = pl->mySprite.width;
+
+		/*-------------------------------------------------------------*/
+		/*                          TILE                               */
+		/*-------------------------------------------------------------*/
 
 		// for every single tile
 		for (int i = 0; i < 364; i++)
 		{
 			// build a rect for that tile if blank
 			Rectangle recTile;
-			recTile.height = 32;//  master.tiles->texture.height;
-			recTile.width = 32; // master.tiles->texture.width;
-			recTile.x = (i % 26)* 32;
+			recTile.height = 32;
+			recTile.width = 32;
+			recTile.x = (i % 26) * 32;
 			recTile.y = (i / 26) * 32;
 
 			if (master.grid[i] == 0)
 			{
-				for (int i = 0; i < att.size(); ++i)
+				for (int i = 0; i < att.size(); ++i) // checking for a collision between wizard attack and wall
 				{
 					if (CheckCollisionRecs(att[i]->rec, recTile))
 					{
-						att.erase(att.begin() + i);
+						att.erase(att.begin() + i); // destroy the wizard attack
+					}
+				}
+
+				// enemy and t
+				for (int i = 0; i < en.size(); ++i)
+				{
+					if (en[i]->shouldRender)
+					{
+						if (CheckCollisionRecs(en[i]->rec, recTile))
+						{
+							en[i]->shouldRender = false;
+							break;
+						}
 					}
 				}
 
@@ -163,24 +302,6 @@ int main()
 			}
 		}
 
-		for (int i = 0; i < att.size(); i++)
-		{
-			int cdist = 0;
-			int xdist = 0;
-			int ydist = 0;
-
-			xdist = att[i]->dest.x - att[i]->position.x;
-			ydist = att[i]->dest.y - att[i]->position.y;
-
-			cdist = ((xdist * xdist) + (ydist * ydist));
-			cdist = sqrtf(cdist);
-
-			if (cdist < 10.0f)
-			{
-				att.erase(att.begin() + i);
-			}
-		}
-
 		/*  Paint  */
 		/*
 		if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) 
@@ -213,31 +334,15 @@ int main()
 		}
 		*/
 
+		/*-------------------------------------------------------------*/
+		/*                          DRAW                               */
+		/*-------------------------------------------------------------*/
+
 		BeginDrawing();
 
 		ClearBackground(BLACK);
 
-		if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && spellsCastedTime >= 2.0f)
-		{
-			spellsCastedTime = 0;
-
-			att.push_back(new wizAttack("candy_02b.png"));
-			att.back()->position = pl->position;
-			att.back()->dest = cursor;
-
-			wizAttack& atk = *att.back();
-
-			Vector2 diff = { atk.dest.x - pl->position.x, atk.dest.y - pl->position.y };
-			float dist = sqrt(diff.x * diff.x + diff.y * diff.y);
-			diff.x /= dist;
-			diff.y /= dist;
-
-			atk.dir = diff;
-
-			std::cout << "yep" << std::endl;
-		}
-
-		for (int i = 0; i < 364; i++)
+		for (int i = 0; i < 364; i++) // drawing tiles
 		{
 			if (master.on[i] == true)
 			{
@@ -245,19 +350,44 @@ int main()
 			}
 		}
 
-		pl->draw(WHITE);
+		pl->draw(WHITE); // player draw
 
-		for (int i = 0; i < att.size(); ++i)
+		for (int i = 0; i < en.size(); i++)
+		{
+			if (en[i]->shouldRender)
+			{
+				en[i]->draw({ 255, 255, 255, 120 });
+			}
+		}
+
+		for (int i = 0; i < att.size(); ++i) // wizard attack draw
 		{
 			att[i]->draw();
 		}
 
+		DrawRectangle(pl->position.x, pl->position.y, healthBar, 1, RED);
+		DrawText(std::to_string(score).c_str(), 60, 10, 15, RAYWHITE);
+		DrawText(std::to_string(hst.hsn).c_str(), 85, 50, 15, RAYWHITE);
+		DrawText("Score:", 10, 10, 15, RAYWHITE);
+		DrawText("HighScore:", 10, 50, 15, RAYWHITE);
+
+		delete[] opacity;
+
 		EndDrawing();
 	}
 	CloseWindow();
+
+	if (!pl->alive) // saving the new highscore back to file
+	{
+		if (score > hst.hsn)
+		{
+			hst.hsn = score;
+			hst.hsTableSave("hst.txt");
+		}
+	}
 }
 
-void loadMap(std::string fileName, masterTile &master)
+void loadMap(std::string fileName, masterTile &master) // loading the map from file
 {
 	std::string buffer;
 
