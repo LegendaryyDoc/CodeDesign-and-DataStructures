@@ -16,7 +16,7 @@ int main()
 	link.push_front(5);
 	link.remove(5);
 	link.end();
-	
+	// link.~tForwardList();
 
 	//cTemp.operator=(link);
 	cTemp = link;
@@ -51,6 +51,8 @@ int main()
 		std::cout << copy.front() << std::endl;
 		copy.pop_front();
 	}
+
+	
 
 	system("pause");
 	return 0;

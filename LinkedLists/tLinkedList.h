@@ -132,7 +132,15 @@ inline tForwardList<T>::tForwardList()
 template<typename T>
 inline tForwardList<T>::~tForwardList()
 {
+	Node *temp = NULL;
 
+	while (head != NULL)
+	{
+		temp = head->next;
+		delete head;
+
+		head = temp;
+	}
 }
 
 template<typename T>
