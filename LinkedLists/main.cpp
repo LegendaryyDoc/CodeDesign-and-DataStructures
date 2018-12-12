@@ -16,7 +16,7 @@ int main()
 	link.push_front(5);
 	link.remove(5);
 	link.end();
-	// link.~tForwardList();
+	//link.~tForwardList();
 
 	//cTemp.operator=(link);
 	cTemp = link;
